@@ -1,5 +1,5 @@
 ---
-Layout: blog
+layout: blog
 title: Performance Tuning tips for the lonely developer
 summary: Series of posts to help the lonely developer tune his query and DB2 database code 
 ---
@@ -27,10 +27,13 @@ What do you have?
 
 To give a brief idea on what the above are :
 
-  Data - a flat file, a database or a schema or set of tables with data. 
-  Requirement - what is being expected out from your code - the functional correctness part.
-  SLA- What is the time duration within which the functionality is expected to get achieved. 
-  factors - job priorities (WLM), database resources or your next cabin developer who might try to hijack the entire database by running a table scan over a billion row table. Everything counts. 
+* Data - a flat file, a database or a schema or set of tables with data. 
+
+* Requirement - what is being expected out from your code - the functional correctness part.
+
+* SLA- What is the time duration within which the functionality is expected to get achieved. 
+
+* factors - job priorities (WLM), database resources or your next cabin developer who might try to hijack the entire database by running a table scan over a billion row table. Everything counts. 
 
 Now when a junior developer starts working on a project, he might not know _everything about the data_ or the _factors_ and all he knows is the requirement and part of the _data_ that directly influences his work - i.e., the tables/schema. 
 
