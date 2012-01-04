@@ -1,3 +1,4 @@
+---
 Layout: blog
 title: Performance Tuning tips for the lonely developer
 summary: Series of posts to help the lonely developer tune his query and DB2 database code 
