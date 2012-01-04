@@ -46,7 +46,7 @@ What do you ned to know to churn out good code in DB2?
 * [TBD][newpage]
 * [TBD][newpage]
 
-[newpage]: /_posts/assets/tbdeveloped.md "The page is yet to be written" 
+[newpage]: /static/tbdeveloped.html "The page is yet to be written" 
 
 I will work on mostly UDB as it is what I have experience on. Please subscribe to the email list to get notified as and when new content gets uploaded to this series. 
 

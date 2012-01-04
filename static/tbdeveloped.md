@@ -1,4 +1,5 @@
-Layout: blog
+---
+layout: blog
 title: To be developed
 summary: Series of posts to help the lonely developer tune his query and DB2 database code
 ---
