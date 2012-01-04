@@ -34,11 +34,11 @@ To give a brief idea on what the above are :
 Now when a junior developer starts working on a project, he might not know _everything about the data_ or the _factors_ and all he knows is the requirement and part of the _data_ that directly influences his work - i.e., the tables/schema. 
 
 What do you ned to know to churn out good code in DB2? 
-[1. Understanding about the table constraints, RIs , data types and table indexes ][newpage]
-[2. Table statistics and their influence][newpage]
-[3. Tablespaces, index space, bufferpools and their related knowledge][newpage]
-[4. TBD][newpage]
-[5. TBD][newpage]
+* [1. Understanding about the table constraints, RIs , data types and table indexes ][newpage]
+* [2. Table statistics and their influence][newpage]
+* [3. Tablespaces, index space, bufferpools and their related knowledge][newpage]
+* [4. TBD][newpage]
+* [5. TBD][newpage]
 [newpage]: /assets/tbdeveloped.md "The page is yet to be written" 
 
 I will work on mostly UDB as it is what I have experience on. Please subscribe to the email list to get notified as and when new content gets uploaded to this series. 
