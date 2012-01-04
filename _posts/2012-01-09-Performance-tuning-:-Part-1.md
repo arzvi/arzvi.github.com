@@ -7,7 +7,7 @@ summary: Series of posts to help the lonely developer tune his query and DB2 dat
 # {{ page.title }}
 
 __09 Dec 2012 - Bangalore, India__
-_'There are tons of material on performance tuning and optimization for SQL and DB2 code online. Then why is this undertaking?'_ You may ask. What I felt when I read each piece of knowledge from disparate sources when I started as a junior guy at my company is fear, confusion and very little success with huge effort put on with a lot of time. There are great blog posts and reference materials that helped me gain confidence and understanding and confidence on working with DB2, and they will be listed during the end of the series. 
+'There are tons of material on performance tuning and optimization for SQL and DB2 code online. Then why is this undertaking?' You may ask. What I felt reading each piece of knowledge from disparate sources when I started as a junior guy at my company were fear, confusion and very little success with huge time and effort put on it. There are great blog posts and reference materials that helped me gain confidence and understanding and confidence on working with DB2, and they will be listed during the end of the series. 
 What I am trying to achieve here is to layout an interconnected knowledge pools to help the reader easily understand the basis of performance tuning and help him/her take a path to achieving good throughputs in their projects. 
 
 ###What is performance? 
@@ -22,7 +22,7 @@ What do you have?
 1. data
 2. requirement
 3. SLA
-4. factors that 'might' influence your code's throughput
+4. factors that 'might' influence your codes throughput
 
 To give a brief idea on what the above are :
 
