@@ -7,6 +7,7 @@ summary: Series of posts to help the lonely developer tune his query and DB2 dat
 # {{ page.title }}
 
 __09 Dec 2012 - Bangalore, India__
+
 'There are tons of material on performance tuning and optimization for SQL and DB2 code online. Then why is this undertaking?' You may ask. What I felt reading each piece of knowledge from disparate sources when I started as a junior guy at my company were fear, confusion and very little success with huge time and effort put on it. There are great blog posts and reference materials that helped me gain confidence and understanding and confidence on working with DB2, and they will be listed during the end of the series. 
 
 What I am trying to achieve here is to layout an interconnected knowledge pools to help the reader easily understand the basis of performance tuning and help him/her take a path to achieving good throughputs in their projects. 
@@ -39,11 +40,11 @@ Now when a junior developer starts working on a project, he might not know _ever
 
 What do you ned to know to churn out good code in DB2? 
 
-* [1. Understanding about the table constraints, RIs , data types and table indexes ][newpage]
-* [2. Table statistics and their influence][newpage]
-* [3. Tablespaces, index space, bufferpools and their related knowledge][newpage]
-* [4. TBD][newpage]
-* [5. TBD][newpage]
+* [Understanding about the table constraints, RIs , data types and table indexes ][newpage]
+* [Table statistics and their influence][newpage]
+* [Tablespaces, index space, bufferpools and their related knowledge][newpage]
+* [TBD][newpage]
+* [TBD][newpage]
 
 [newpage]: /_posts/assets/tbdeveloped.md "The page is yet to be written" 
 
