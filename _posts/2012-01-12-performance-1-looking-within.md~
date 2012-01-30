@@ -1,0 +1,181 @@
+---
+layout: blog
+title: Performance tuning 1 - Looking within
+summary: Database fundamentals and some other basic stuff
+---
+
+# {{ page.title }}
+
+__12 Jan 2012 - Bangalore, India__
+
+
+This article gives you an idea of the choices you have to bulletproof your table using constraints. The different table constraints available in DB2 are
+
+*  unique key
+*  primary key 
+*  not null
+*  foreign key
+*  check
+
+This article assumes the reader has introductory knowledge in database terminologies(like the term key, projections etc.)
+
+###Unique Key 
+The set of columns that is used to uniquely identify every single row of the table. 
+Take the following dataset for cars.
+  Table - cars.models
+  
+        Make	Model	Displacement	Power	Torque	Price
+        ----	-----	------------	-----	------	-----
+
+        Ford	Mustang	3.5L		    305	249	28000	
+        Ford	Fiesta	1.4L		    121	98	11000
+        Toyota	Corolla	1.6L		    143	121	14000
+        Toyota	Camry	2L		        197	161	19000
+        Honda	Civic	1.6L		    164	    129 	17000
+        Honda	Civic S 1.6L		    197 	154 	19000
+
+How do you uniquely identify every row? Consider the column 'Make' for example. The number of rows per each unique value under make is
+
+	    Make	Count
+	    ----	-----
+	    Ford	2
+	    Toyota	2
+	    Honda	2
+
+What it basically means is every unique value identifies two rows in the table.
+
+		SQL> select * from cars where make="Ford";
+	
+        Make    Model	Displacement	Power	Torque	Price
+        ----	-----	------------	-----	------	-----
+
+        Ford	Mustang	3.5L		    305	     249	28000	
+        Ford	Fiesta	1.4L		    121 	 98  	11000
+		
+The SQL above returns two rows. What if you need to read the power of a single car, say 'Mustang'? You get returned with two rows instead. It is ok to run the above query here as the rowcount is low. What if your table contains data about every car sold in each of the states? It will have millions of rows and will overwhelm you who is trying to find the 'Power' for a single car. 
+
+The set of columns that identifies uniquely here is _\{Make,Model}_. 
+
+         Make    Model   Count
+    
+
+This combination becomes our *unique key*. 
+
+###Primary key
+
+The definition of primary key is the same as the unique key stated earlier. So the curious you inside asks 'why do we even have something called the Primary Key, when there is unique key already'?
+
+What if the following is the data set inside our table?
+
+        Make	Model	Displacement	Power	Torque	Price
+        ----	-----	------------	-----	------	-----
+
+        Ford	Mustang	3.5L		    305	249	28000	
+        Ford	Fiesta	1.4L		    121	98	11000
+        Toyota	Corolla	1.6L		    143	121	14000
+        Toyota	Camry	2L		        197	161	19000
+        Honda	Civic	1.6L		    164	    129 	17000
+        Honda	Civic S 1.6L		    197 	154 	19000
+                        6.5L            305     351     37000
+
+
+The 7th row contains no value under the columns Make and Model. But it does have value for the other columns. Is it unique? Yes, as you don't have another row with empty values for both the columns. But is it useful? Maybe in Pandora where it is sane to be nameless. But in our mother Earth, you need a name to identify anything. Here comes the primary key. 
+
+The main difference between unique key and Primary Key is that you can have empty values for columns that comprise a unique key, but the primary key doesn't allow you to. 
+
+Primary key = Unique key + 'Not null' constraint on each of the columns. 
+
+Primary key does go sometimes by ['candidate key'][http://en.wikipedia.org/wiki/Candidate_key].
+
+###not null
+
+Enabling this constraint on a column guarantees that the database will disallow using 'null' as a tuple(row) value. You will need to supply a value(widespread usage of denoting flat value is 0 for numerical columns and empty string for character based columns - ''. There are many reasons why DBAs [discourage using NULLs][] and go with this way instead). 
+
+###Foreign key 
+
+This sets up a relationship between two tables. Assume our schema contains a table containing information about car manufacturers. 
+
+  _Table - cars.makers_
+  
+            Name          HQ-city         Hq-STATE
+            ----          -------         --------
+          
+            Ford          Detroit         Michigan
+            Chevrolet     Detroit         Michigan
+            Honda         Tokyo           Japan
+  
+What if we have a tuple(row) in our _models_ table that contains say 'Arzvi' under _Make_ and the curious you needs to know where it is based. So you run the query
+
+        db2> select * from cars.makers where name = 'Arzvi';
+    
+            Name          HQ-city         Hq-STATE
+            ----          -------         --------
+            
+            0 rows selected.
+    
+You don't find anything. Huh. Did it land from Pandora? Do you need to contact the NSA? Or FBI? You might laugh at this, but errors due to empty ends in a relation has proved costly in our database world. 
+
+Foreign key relates a column in a table with it's corresponding column in the other end of relation which it needs to refer. The former constitutes 'child' and the latter the 'parent' in this relationship. Note that you can have more than one foreign key on a single table. 
+
+Below is the command to create a relation between models and their makers on the Make column. 
+
+        db2> alter table cars.models add constraint fkey1 foreign key(make) references cars.makers(name);
+
+Note : DB2 doesn't stop you from referring each of the column to it's counterpart in another table. But this does impact performance. Defining a foreign key constraint on a column makes the database engine refer to the parent column on any manipulation you do on that column (add/modify value). So if you have 5 foreign keys on your table, the engine needs to refer five tables to check the presence of the value in parent columns. 
+
+###check 
+
+Imagine you have a column to hold the year of manufacture. 
+
+        Make	Model	Displacement	Power	Torque	Price   Make-year
+        ----	-----	------------	-----	------	-----   ---------
+
+        Ford	Mustang	3.5L		    305	    249 	28000   2011
+        Ford	Fiesta	1.4L		    121	    98  	11000   2011
+        Toyota	Corolla	1.6L		    143	    121 	14000   2010
+        Toyota	Camry	2L		        197	    161 	19000   2011
+        Honda	Civic	1.6L		    164	    129 	17000   2011
+        Honda	Civic S 1.6L		    197 	154 	19000   2012
+                        6.5L            305     351     37000   1412                    
+
+Consider our_car from pandora_. Make-year -_1212_?? Huh?? Ok, so it was brought in a disk shaped ship during the [hundred years' war][http://en.wikipedia.org/wiki/Hundred_Years%27_War]?? Nah. Unless discovery channel reports something, you won't be having this value. What do you do to make sure the_lazy sleepy data entry operator_ doesn't insert this in error? __Check constraint__ to the rescue. 
+
+You define a _check constraint_ to make the database engine _check_ the value entered before storing in the table. For sanity purposes, the below might be a valuable check constraint for our ___make___ table. Before you add it, you make sure the engine doesn't enable the constraint upfront. To do that you use the _set integrity_ command. 
+
+        db2> set integrity for cars.models off;
+        db2> alter table cars.models add constraint year_check check year(makeyear) > 1885; 
+        
+(I assume the first mass produced car was by Karl Benz in 1885). 
+
+After creating the constraint you validate the table and remove the rows that doesn't satisfy the rule using the _set integrity_ command again. Before running the command you create what is called an exception table, that is meant to hold (not only) the exceptions in our main table. 
+
+        db2> create table cars.modelexcp like cars.models;
+        db2> set integrity for cars.models immediate checked for exception in cars.models use cars.modelexcp;
+        SQL3602W  Check data processing found constraint violations and moved them to exception tables. SQLSTATE=01603
+        db2> select * from cars.models; 
+        
+        Make	Model	Displacement	Power	Torque	Price   Make-year
+        ----	-----	------------	-----	------	-----   ---------
+
+        Ford	Mustang	3.5L		    305	    249 	28000   2011
+        Ford	Fiesta	1.4L		    121	    98  	11000   2011
+        Toyota	Corolla	1.6L		    143	    121 	14000   2010
+        Toyota	Camry	2L		        197	    161 	19000   2011
+        Honda	Civic	1.6L		    164	    129 	17000   2011
+        Honda	Civic S 1.6L		    197 	154 	19000   2012
+
+Note : You can use the set integrity command to turn off foreign key checks when adding it's constraint and enable it flushing the bad rows in the same way as stated above.
+
+###_to be or not to be_ 
+
+You can enable or disable(turn it off) every constraint that was described above using the ___enforced/not enforced___ keywords. 
+
+        db2> alter table cars.modelexcp alter constraint fkey1 not enforced; 
+        
+This would turn off the foreign key checks between cars.models and cars.makers, paving the path to have a car manufactured by yours truly. 
+
+
+###In the end
+This post gave you an idea of constraints in db2 that you can use to maintain data integrity. You can manage them using the command line(like me) or other db2 clients (data studio, toad etc.). Happy locking down.
+
+Post read : If you need more information on constraints, fear not - the [detailed article from Leon Kwok in developerworks is the go-to[http://www.ibm.com/developerworks/data/library/techarticle/dm-0401melnyk/]. 
