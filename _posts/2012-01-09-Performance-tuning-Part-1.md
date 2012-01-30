@@ -6,7 +6,7 @@ summary: Series of posts to help the lonely developer tune his query and DB2 dat
 
 # {{ page.title }}
 
-__09 Dec 2012 - Bangalore, India__
+__09 Dec 2011 - Bangalore, India__
 
 'There are tons of material on performance tuning and optimization for SQL and DB2 code online. Then why is this undertaking?' You may ask. What I felt reading each piece of knowledge from disparate sources when I started as a junior guy at my company were fear, confusion and very little success with huge time and effort put on it. There are great blog posts and reference materials that helped me gain confidence and understanding and confidence on working with DB2, and they will be listed during the end of the series. 
 
