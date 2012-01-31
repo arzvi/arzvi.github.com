@@ -28,10 +28,6 @@ pre code {
 blockquote {
     color: #F0E7A8;
 }
-
-strong em {
-    color: #F0E7A8;
-}
 .full_background {
 	display: block;
 	width: 100%;
